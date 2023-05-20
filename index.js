@@ -1,16 +1,30 @@
 //要素の取得
 const post_form = document.getElementById('post_form');
+const post_textbox = document.getElementById('post_textbox');
 const post_button = document.getElementById('post_button');
 const dynamic_part = document.getElementById('dynamic_part');
 
+//イベントハンドラの除去
+post_form.onsubmit = ()=>{return false;};
+post_button.onsubmit = ()=>{return false;};
+post_textbox.onsubmit = ()=>{return false;};
+
 //イベントリスナの追加
-post_button.addEventListener('click', async (event) => {
-    var content = sanitize(post_form.value);
-    var res = await exploit_sentence(content);
-    update_dynamic_part(res);
-    /* フォームをクリア */
-    post_form.value = "";
-});
+async function post(event){
+    try {
+        var content = sanitize(post_textbox.value);
+        var res = await exploit_sentence(content);
+        update_dynamic_part(res);
+        /* フォームをクリア */
+        post_textbox.value = "";
+    } catch (error) {
+        console.log(error);
+    }
+    return false;
+};
+post_button.addEventListener('click',post);
+post_textbox.addEventListener('submit',post);
+post_form.addEventListener('submit',post);
 
 //以下各種関数定義
 function sanitize(input){
@@ -38,8 +52,8 @@ function update_dynamic_part(res){
 
 function update_style(obj){
     obj.setAttribute("style",
-        /* objにのみ適用されるスタイル transform: scaleX(${obj.getAttribute("tremor")}%);\
-        */    
+        /* objにのみ適用されるスタイル */
+        /*回転中心が画面中央になるように調整しています*/
         `animation-duration:${Math.abs(1-obj.getAttribute("tremor"))*60}s;\
         top:${obj.getAttribute("tremor")*40}%;\
         height:${100-obj.getAttribute("tremor")*80}%;`
