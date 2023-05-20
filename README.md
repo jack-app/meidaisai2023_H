@@ -1,5 +1,17 @@
 # meidaisai2023_F
 
+## 最小要件
+
+### ファイル構成
+
+- workroot
+  - README.md
+  - index.html
+  - index.js
+  - index.css
+  - src
+    - planet.svg
+
 ## 要件
 
 ### TRANSITION DIAGRAM
