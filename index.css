@@ -1,0 +1,46 @@
+/* 見た目ここから 
+参考程度に書いてありますが、基本全部書き直すつもりでいてください
+*/
+body{
+    background-color: rgb(27, 27, 27);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+.obj{
+    color: white;
+}
+#dynamic_part{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;    
+}
+/* 見た目ここまで */
+/* アニメーションここから 
+参考程度に書いてありますが、基本全部書き直すつもりでいてください
+attrで要素の属性を取得できるらしいです。必要な属性があればjsで付与していくので教えてください
+*/
+@keyframes spine{
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+}
+.obj{
+    display: block;
+    position: absolute;
+    transform-origin: 50% -500%;
+    top: 75%;
+    left: 50%;
+    animation: 3s linear infinite spine;
+}
+/* アニメーションここまで*/
