@@ -2,15 +2,18 @@
 
 ## 最小要件
 
-### ファイル構成
+### 動作環境
 
-- workroot
-  - README.md
-  - index.html
-  - index.js
-  - index.css
-  - src
-    - planet.svg
+#### MeCab
+
+以下を参考にインストールしてください
+https://taku910.github.io/mecab/#install-windows
+
+#### ブラウザ
+
+動作確認済みのブラウザは以下の通りです
+
+- MSEdge
 
 ## 要件
 
