@@ -4,10 +4,9 @@
 
 ### 動作環境
 
-#### MeCab
+#### Python
 
-以下を参考にインストールしてください
-https://taku910.github.io/mecab/#install-windows
+形態素解析の実行にPythonを利用します。
 
 #### ブラウザ
 

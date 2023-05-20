@@ -20,7 +20,7 @@ function sanitize(input){
 };
 
 async function exploit_sentence(content){
-    /* shimejiを呼ぶ */
+    /* MeCabを呼ぶ */
 };
 
 function update_dynamic_part(res){
