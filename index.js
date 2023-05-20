@@ -2,7 +2,6 @@
 const post_form = document.getElementById('post_form');
 const post_button = document.getElementById('post_button');
 const dynamic_part = document.getElementById('dynamic_part');
-const dynamic_css = document.getElementById('dynamic_css');
 
 //イベントリスナの追加
 post_button.addEventListener('click', async (event) => {
@@ -20,9 +19,29 @@ function sanitize(input){
 };
 
 async function exploit_sentence(content){
-    /* shimejiを呼ぶ */
+    /* ローカルホストにMecabを動かしてもらいます */
+    return (await fetch(`http://127.0.0.1:8000/?text=${content}`)).json();
 };
 
 function update_dynamic_part(res){
-    /* 動的部分のアップデート */
+    /* 分割された単語それぞれに処理を施します */
+    res.list.forEach((elem) => {
+        var obj = document.createElement("div");
+        obj.innerText = elem;
+        obj.classList.add("obj");
+        obj.setAttribute("obj-id",dynamic_part.childElementCount + 1);
+        obj.setAttribute("tremor",Math.random());
+        dynamic_part.append(obj);
+        update_style(obj);
+    })
 };
+
+function update_style(obj){
+    obj.setAttribute("style",
+        /* objにのみ適用されるスタイル transform: scaleX(${obj.getAttribute("tremor")}%);\
+        */    
+        `animation-duration:${Math.abs(1-obj.getAttribute("tremor"))*60}s;\
+        top:${obj.getAttribute("tremor")*40}%;\
+        height:${100-obj.getAttribute("tremor")*80}%;`
+    );
+}
