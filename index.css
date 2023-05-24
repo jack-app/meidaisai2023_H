@@ -4,9 +4,70 @@ body{
     position: absolute;
     width: 100%;
     height: 100%;
+    overflow: hidden;
+    margin: 0 0 0 0;
+    border: 0 0 0 0;
+    padding: 0 0 0 0;
+    z-index: -2;
+    align-items: center;
+    text-align: center;
+    display: flex;
 }
 .obj{
     color: white;
+}
+#planet_image{
+    margin-left: auto;
+    margin-right: auto;
+}
+#post_form{
+    position: absolute;
+    bottom: 5%;
+    right: 2%;
+    height: 10%;
+    width: 30%;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+#post_textbox{
+    position: relative;
+    background-color: #161616;
+    color: #fff;
+    letter-spacing: 1px;
+    border-style: solid;
+    border-radius: 10px;
+    border-color: #fff;
+    border-width: 1px;
+    height: 100%;
+    width: 100%;
+    margin-right: 4%;
+    z-index: 1;
+}
+#post_textbox:focus{
+    border-color:rgb(125, 168, 237);
+    background-color: rgb(11, 11, 11);
+}
+#post_button{
+    position: absolute;
+    border-style: none;
+    border-radius: 20%;
+    right: 7%;
+    bottom: 7%;
+    height: 4em;
+    width: 5em;
+    text-align: center;
+    color: #fff;
+    font-style: bold;
+    font-size: 0.6em;
+    font-family: Impact;
+    background-color: rgb(51, 115, 217);
+    z-index: 2;
+}
+#post_button:active{
+    background-color: rgb(49, 88, 151);
+    animation-duration: 0.2s;
 }
 #dynamic_part{
     margin: 0;
