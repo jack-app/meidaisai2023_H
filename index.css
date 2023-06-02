@@ -102,3 +102,7 @@ body{
     animation: 3s linear infinite spine;
 }
 /* アニメーションここまで*/
+
+body{
+background-image:url(./src/BackGroundImage.jpg);
+}
