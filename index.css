@@ -21,23 +21,10 @@ body{
     height: 100%;
 }
 /* 見た目ここまで */
-@keyframes spine{
-    0%{
-        transform: rotate(0deg);
-    }
-    100%{
-        transform: rotate(360deg);
-    }
-}
 .obj{
-    display: inline-block;
+    display: flex;
     position: absolute;
-    transform-origin: 50% 50%;
-    top: 0%;
-    left: 0%;
-    height: 100%;
-    width: 100%;
-    text-align: center;
-    animation: 3s linear infinite spine;
+    width: 100px;
+    height: 100px;
 }
 /* アニメーションここまで*/

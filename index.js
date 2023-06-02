@@ -46,16 +46,14 @@ function update_dynamic_part(res){
         obj.setAttribute("obj-id",dynamic_part.childElementCount + 1);
         obj.setAttribute("tremor",Math.random());
         dynamic_part.append(obj);
-        update_style(obj);
     })
 };
-
-function update_style(obj){
-    obj.setAttribute("style",
-        /* objにのみ適用されるスタイル */
-        /*回転中心が画面中央になるように調整しています*/
-        `animation-duration:${Math.abs(1-obj.getAttribute("tremor"))*60}s;\
-        top:${obj.getAttribute("tremor")*40}%;\
-        height:${100-obj.getAttribute("tremor")*80}%;`
-    );
-}
+function animateBlocks(){
+    anime({
+        targets: ".obj",
+        translateX: function() {
+            return anime.random(-100, 100);
+        },
+    })
+};
+    animateBlocks()
