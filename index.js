@@ -48,6 +48,9 @@ function update_dynamic_part(res){
         dynamic_part.append(obj);
     })
 };
+
+
+
 function animateBlocks(){
     anime({
         targets: ".obj",
