@@ -23,7 +23,6 @@ async function post(event){
     return false;
 };
 post_button.addEventListener('click',post);
-post_textbox.addEventListener('submit',post);
 post_form.addEventListener('submit',post);
 
 //以下各種関数定義
