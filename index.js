@@ -28,12 +28,16 @@ post_form.addEventListener('submit',post);
 //以下各種関数定義
 function sanitize(input){
     /* フォームの入力内容を無害化 */
-    return input.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    return input
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 };
 
 async function exploit_sentence(content){
     /* ローカルホストにMecabを動かしてもらいます */
-    return (await fetch(`http://127.0.0.1:8000/?text=${content}`)).json();
+    return (
+        await fetch(`http://127.0.0.1:8000/?text=${content}`)
+        ).json();
 };
 
 function update_dynamic_part(res){
@@ -47,6 +51,7 @@ function update_dynamic_part(res){
         dynamic_part.append(obj);
         update_style(obj);
     })
+    console.log(dynamic_part);
 };
 
 function update_style(obj){
