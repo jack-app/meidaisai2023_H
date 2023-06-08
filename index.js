@@ -25,7 +25,9 @@ async function post(event){
     return false;
 };
 post_button.addEventListener('click',post);
-post_form.addEventListener('submit',post);
+document.addEventListener('keypress',(event) => {
+    if (event.code === "Enter" && event.shiftKey === true) {post();};
+});
 
 //以下各種関数定義
 function sanitize(input){
@@ -57,8 +59,8 @@ function update_style(obj){
         /* objにのみ適用されるスタイル */
         /*回転中心が画面中央になるように調整しています*/
         `animation-duration:${Math.abs(1-obj.getAttribute("tremor"))*60}s;\
-        top:${obj.getAttribute("tremor")*40}%;\
-        height:${100-obj.getAttribute("tremor")*80}%;`
+        top:${obj.getAttribute("tremor")*35}%;\
+        height:${100-obj.getAttribute("tremor")*70}%;`
     );
 };
 
