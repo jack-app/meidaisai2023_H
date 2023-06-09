@@ -21,7 +21,7 @@
             <div class="planets">
                 {% for planet in planets[loop.index - 1] %}
                 <div class="orbit">
-                    <a href="{{planet[1]}}">
+                    <a href="{{solar[1]}}/{{planet[1]}}">
                         <div class="planet">
                             <div class="content">
                             <p>{{planet[1]}}</p>
