@@ -2,6 +2,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import MeCab
+from aiofiles import open
 
 # FastAPIを起動
 app = FastAPI()
@@ -37,3 +38,17 @@ async def root(text = None):
         node = node.next # 次の形態素分析結果に移る
 
     return {"list":response} # レスポンスを返す
+
+#渡されたtextをwords.datに追記
+@app.get("/write")
+async def write(string):
+    async with open("./src/words.dat","a",encoding="utf-8") as f:
+        await f.write("\n"+string)
+    return {}
+
+#words.datに保存された内容を読み出し
+@app.get("/read")
+async def read():
+    async with open("./src/words.dat","r",encoding="utf-8") as f:
+        content = await f.read()
+    return {"list":content.split("\n")}
