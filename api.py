@@ -40,9 +40,9 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 # テーブルを新規作成
 def initial_sql(dbpath):
 
-    solars_data = [(1, '名大祭記念'),
-        (2, 'ユニバース'),
-        (3, '住んでる町'),
+    solars_data = [(1, '名大祭記念', 'StarImage.png'),
+        (2, 'ユニバース', 'StarImage2.png'),
+        (3, '住んでる町', 'StarImage3.png'),
         ]
     planets_data = [
         [],
@@ -56,9 +56,10 @@ def initial_sql(dbpath):
     cur.execute("""
         CREATE TABLE IF NOT EXISTS solars(
             id INTEGER PRIMARY KEY,
-            name TEXT NOT NULL)
+            name TEXT NOT NULL,
+            path TEXT NOT NULL)
         """)
-    sqls = 'INSERT INTO solars (id, name) values (?, ?)'
+    sqls = 'INSERT INTO solars (id, name, path) values (?, ?, ?)'
     cur.executemany(sqls, solars_data)
 
     # 太陽系のDBを作成
@@ -93,8 +94,8 @@ async def title(request: Request):
         "index.html",
         {
             "request": request,
-            "solars": [row[1] for row in solars],
-            "planets": planets
+            "solars": solars,
+            "planets": planets,
         }
     )
 
