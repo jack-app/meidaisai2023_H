@@ -61,7 +61,6 @@ def initial_sql(dbpath):
                 name TEXT NOT NULL)
             """)
         sqls = 'INSERT INTO ' + table_name +'(id, name) values(?, ?)'
-        print(sqls)
         if len(planets_data[idx]) > 0: cur.executemany(sqls, planets_data[idx])
     conn.commit()
 
@@ -76,12 +75,14 @@ conn = sql.connect(dbpath)
 async def title(request: Request):
     cur = conn.cursor()
     cur.execute("SELECT * FROM solars")
-    solars_name = [row[1] for row in cur]
+    solars = cur.fetchall()
+    #for in len(solars):
+    #cur.execute("SELECT * FROM" + solars_name)
     return templates.TemplateResponse(
         "title.html",
         {
             "request": request,
-            "planets": solars_name,
+            "planets": [row[1] for row in solars],
         }
     )
 
