@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{{url_for('static', path='./css/index.css')}}" type="text/css"/>
     <title>Planet</title>
 </head>
-<body>
+<body style="background-image:url({{url_for('static', path="img/BackGroundImage.jpg")}})">
     <div class="solar-menu">
     {% for solar in solars %}
         <div class="solar-system">
@@ -17,15 +17,22 @@
             <img src="{{url_for('static', path='./img/' + solar[2])}}" class="polar">
             </div>
             <div class="planets">
-                {% for planet in planets[loop.index] %}
+                {% for planet in planets[loop.index - 1] %}
                 <div class="orbit">
-                    <a href="#">
+                    <a href="{{planet[1]}}">
                         <div class="planet">
                             <div class="content">
                             <p>{{planet[1]}}</p>
                             </div>
                         </div>
                     </a>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="planets">
+                {% for idx in range(20) %}
+                <div class="small-orbit">
+                    <div class="small-planet"></div>
                 </div>
                 {% endfor %}
             </div>

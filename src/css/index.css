@@ -1,16 +1,18 @@
 body{
-   background-color: rgb(0, 0, 0);
+   background-color: rgb(150, 150, 150, 1);
+   background-blend-mode: darken;
 }
 /*恒星*/
 .solar-menu {
    display: flex;
    flex-wrap: nowrap;
+   vertical-align: middle;
 }
 .solar-system{
    display: table;
    min-width: 1200px;
-   height: 1000px;
-   margin: 0 auto;
+   height: 90vh;
+   margin: auto;
    position: relative;
 }
 .polar-fix {
@@ -29,20 +31,22 @@ body{
 .orbit{
    width: 100px;
    height: 100%;
+   position: relative;
 }
 .planet {
-   width: 20px;
-	height: 20px;
+   width: 30px;
+	height: 30px;
 	border-radius: 50%;
    position: absolute;
    top: 50%;
-   left: 0;
-   transform: translate(-50%, -50%);
+   left: 50%;
+   opacity: 0.8;
 }
 .planet:hover {
-   width: 30px;
-	height: 30px;
-
+   opacity: 1;
+}
+.planet:hover > * {
+   opacity: 1;
 }
 .content{
     opacity: 0;
@@ -50,19 +54,15 @@ body{
     height: 100%;
     transition: all 0.3s;
 }
-.content:hover{
-    opacity: 1;
-}
 .planet p{
-    color:#ffffff;
-    opacity: 0.5;
-    width: 500%;
-    position: absolute;
-    top: 50%;
-    left: -200%;
-    text-align: center;
+   color:#ffffff;
+   opacity: 0.8;
+   position: absolute;
+   width: 100px;
+   text-align: center;
+   left: -35px;
+   top: 20px;
 }
-/*惑星*/
 
 /*メニュー*/
 .bar{
@@ -116,8 +116,9 @@ ul.ddmenu ul li {
  }
  ul.ddmenu ul li a:hover {
     background-color: #2b2b2b; /* サブメニュー項目にマウスが載ったときの背景色(淡い黄色) */
-    color: #ffffffb0;            /* サブメニュー項目にマウスが載ったときの文字色(濃い緑色) */
- }
+    color: #ffffffb0;          /* サブメニュー項目にマウスが載ったときの文字色(濃い緑色) */
+   transform: tran
+}
 
 /*アニメーション*/
 @keyframes rotation{
