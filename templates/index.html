@@ -10,11 +10,13 @@
     <title>Planet</title>
 </head>
 <body style="background-image:url({{url_for('static', path="img/BackGroundImage.jpg")}})">
+    
+    <!--惑星メニュー-->
     <div class="solar-menu">
     {% for solar in solars %}
         <div class="solar-system">
             <div class="polar-fix">
-            <img src="{{url_for('static', path='./img/' + solar[2])}}" class="polar">
+            <img src="{{url_for('static', path='./img/' + solar[2])}}" class="polar" id="{{solar[1]}}">
             </div>
             <div class="planets">
                 {% for planet in planets[loop.index - 1] %}
@@ -29,17 +31,33 @@
                 </div>
                 {% endfor %}
             </div>
-            <div class="planets">
-                {% for idx in range(20) %}
-                <div class="small-orbit">
-                    <div class="small-planet"></div>
-                </div>
-                {% endfor %}
-            </div>
         </div>
     {% endfor %}
     </div>
 
+    <!--UIメニュー-->
+    <div class="top-UI-menu">
+        <div class="pos-lock">
+            <div class="solar-name-UI"></div>
+        </div>
+    </div>
+    <div class="bottom-UI-menu">
+        <div class="pos-lock">
+            <form class="solar-form" onsubmit="add_planets(); return false;">
+            <div class="solar-add-fix">
+                <div class="solar-add-text">惑星名</div>
+                <div class="solar-add-box">
+                    <input class="solar-add-UI" type="text" id="planets-name"/>
+                </div>
+                <div class="solar-add-btnbox">
+                    <input class="solar-add-btn" type="submit" value="生成"/>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+
+    <!--タブメニュー-->
     <ul class="ddmenu">
         <li>
             <a href="#" class="bar"><span class="fa fa-bars"></span></a>

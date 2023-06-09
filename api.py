@@ -55,7 +55,7 @@ def initial_sql(dbpath):
     cur = conn.cursor()
     cur.execute("""
         CREATE TABLE IF NOT EXISTS solars(
-            id INTEGER PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
             path TEXT NOT NULL)
         """)
@@ -98,6 +98,19 @@ async def title(request: Request):
             "planets": planets,
         }
     )
+
+# 惑星を追加
+@app.get("/addplanets")
+async def add_planets(solar: str, planet: str):
+    cur = conn.cursor()
+    cur.execute("SELECT id FROM solars WHERE name = '" + solar + "'")
+    solar_id = cur.fetchall()[0][0]
+    cur.execute("SELECT id FROM planets" + str(solar_id) + " WHERE name = '" + planet + "'")
+    if len(cur.fetchall()): raise Exception()
+    cur.execute('INSERT INTO planets' + str(solar_id) +' (name) VALUES ("' + planet + '")')
+    conn.commit()
+    return {}
+    
 
 @app.get("/{id}/planets/") # 惑星を選択
 # ボタン投下後の処理を並行処理で受け取る
