@@ -48,7 +48,7 @@ window.onload = function() {
     for (let i=0; i<ele.length; i++) {
         var img = ele[i].getElementsByClassName("cpu-img")[0];
         console.log(img.src);
-        img.src = "/src/img/spaceman/spaceman"+ (Math.floor(Math.random() * 10)).toString() +".png";
+        img.src = "/src/img/spaceman/spaceman"+ (Math.floor(Math.random() * 12)).toString() +".png";
         ele[i].style.top = (Math.floor(Math.random() * 50) + 20).toString() + "%";
         ele[i].style.left = (Math.floor(Math.random() * 70) + 10).toString() + "%";
         ele[i].style.zIndex = Math.floor(ele[i].getBoundingClientRect().top + 100).toString();

@@ -62,7 +62,6 @@ function update_dynamic_part(res){
 };
 
 function update_style(obj){
-    console.log(obj);
     const duration = Math.floor(obj.getAttribute("tremor")*60) + 10;
     /* objにのみ適用されるスタイル */
     /*回転中心が画面中央になるように調整しています*/
@@ -84,7 +83,16 @@ async function load_objects(){
 // 以前の内容を呼び出させる
 async function restore_previous_state(){
     var res = await load_objects();
-    console.log(res);
     update_dynamic_part(res);
 };
 restore_previous_state();
+
+// 惑星の色をランダムに設定
+window.onload = function() {
+    const solarImg = document.getElementsByClassName("planet_picture")[0];
+    var color = {r:0, g:0, b:0};
+    for (let i in color) {
+        color[i] = Math.floor(Math.random() * 100) + 100;
+    }
+    planet_picture
+}

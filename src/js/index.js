@@ -69,6 +69,7 @@ function rewrite_solarname() {
 };
 
 window.addEventListener('scroll', function() {
+    checkOffset();
     rewrite_solarname();
 });
 
@@ -77,8 +78,6 @@ async function add_planets() {
     let solarName = document.getElementsByClassName('solar-name-UI')[0]
     solarName = solarName.textContent.slice(5);
     const planetsName = document.getElementById('planets-name').value;
-    console.log(solarName);
-    console.log(planetsName);
 
     /* pythonのデータベースに登録 */
     const params = {
@@ -86,7 +85,6 @@ async function add_planets() {
         planet: planetsName
     }
     const urlParams = new URLSearchParams(params).toString();
-    checkOffset();
     console.log(positionX);
     try {
         await fetch('/addplanets/?' + urlParams)

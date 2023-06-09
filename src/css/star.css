@@ -11,6 +11,12 @@ body{
     background-blend-mode: normal;
     cursor: pointer;
 }
+.top-UI-menu {
+    z-index: 20000;
+}
+.return-btn {
+    z-index: 20000;
+}
 /*user*/
 #user{
     position: absolute;
