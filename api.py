@@ -4,6 +4,11 @@ from fastapi.middleware.cors import CORSMiddleware
 import MeCab
 from aiofiles import open
 
+from fastapi.templating import Jinja2Templates
+from fastapi.requests import Request
+import sqlite3 as sql
+import os
+
 # FastAPIを起動
 app = FastAPI()
 
@@ -18,8 +23,70 @@ app.add_middleware(
 
 tagger = MeCab.Tagger() # MeCabのインスタンス
 
-@app.get("/") # ホームディレクトリ
+# Jinja2テンプレートで反映させる
+templates = Jinja2Templates(directory='templates')
 
+# カレントディレクトリを変更
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
+# テーブルを新規作成
+def initial_sql(dbpath):
+
+    solars_data = [(1, '名大祭記念'),
+        (2, 'ユニバース'),
+        (3, '住んでる町'),
+        ]
+    planets_data = [
+        [],
+        [(1, 'えんぴつ'), (2, 'けしごむ'), (3, '数学'), (4, '工学'), (5, 'マリオカート'), (6, '橋本環奈')],
+        [(1, '本山'), (2, '八事'), (3, '今池'), (4, '栄'), (5, '金山'), (6, '一宮'), (7, '東岡崎')],
+    ]
+
+    # ファイルを作成
+    conn = sql.connect(dbpath)
+    cur = conn.cursor()
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS solars(
+            id INTEGER PRIMARY KEY,
+            name TEXT NOT NULL)
+        """)
+    sqls = 'INSERT INTO solars (id, name) values (?, ?)'
+    cur.executemany(sqls, solars_data)
+
+    # 太陽系のDBを作成
+    for idx in range(len(solars_data)):
+        table_name = "planets" + str(idx + 1)
+        cur.execute("CREATE TABLE IF NOT EXISTS " + table_name +
+            """(id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL)
+            """)
+        sqls = 'INSERT INTO ' + table_name +'(id, name) values(?, ?)'
+        if len(planets_data[idx]) > 0: cur.executemany(sqls, planets_data[idx])
+    conn.commit()
+
+# データベースに接続
+dbpath = "./planets.sqlite"
+if os.path.isfile(dbpath) == False:
+    initial_sql(dbpath)
+conn = sql.connect(dbpath)
+
+# 太陽系を表示する
+@app.get("/")
+async def title(request: Request):
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM solars")
+    solars = cur.fetchall()
+    #for in len(solars):
+    #cur.execute("SELECT * FROM" + solars_name)
+    return templates.TemplateResponse(
+        "title.html",
+        {
+            "request": request,
+            "planets": [row[1] for row in solars],
+        }
+    )
+
+@app.get("/{id}/planets/") # 惑星を選択
 # ボタン投下後の処理を並行処理で受け取る
 async def root(text = None):
     result = tagger.parseToNode(text) # 形態素分析の結果を返す
