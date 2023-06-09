@@ -30,13 +30,6 @@ VSCodeを利用している場合、ワークルートで仮想環境を作れ�
 `pip install -r requirements.txt`
 と実行してください。
 
-#### src
-
-必要な画像ファイルがGitHub上にアップロードされていない為、Slackから
-`BackFroundImage.jpg`
-`StarImage.png`
-をダウンロードしてsrcに配置してください。
-
 #### ブラウザ
 
 動作確認済みのブラウザは以下の通りです
