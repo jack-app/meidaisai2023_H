@@ -29,7 +29,9 @@ app.add_middleware(
     allow_headers=["*"], # 許可するヘッダー
 )
 
-tagger = MeCab.Tagger() # MeCabのインスタンス
+# MeCabの初期設定
+mecab_mode = True
+tagger = MeCab.Tagger()
 
 # Jinja2テンプレートで反映させる
 templates = Jinja2Templates(directory='./templates')
@@ -73,6 +75,15 @@ def initial_sql(dbpath):
         if len(planets_data[idx]) > 0: cur.executemany(sqls, planets_data[idx])
     conn.commit()
 
+    # メッセージのDBを作成
+    cur.execute("""CREATE TABLE IF NOT EXISTS message
+        (solar_id INTEGER,
+        planet_id INTEGER,
+        text TEXT NOT NULL)
+    """)
+    conn.commit()
+
+
 # データベースに接続
 dbpath = "./src/db/planets.sqlite"
 if os.path.isfile(dbpath) == False:
@@ -102,46 +113,91 @@ async def title(request: Request):
 # 惑星を追加
 @app.get("/addplanets")
 async def add_planets(solar: str, planet: str):
+    solar_id = get_solar_id(solar)
     cur = conn.cursor()
-    cur.execute("SELECT id FROM solars WHERE name = '" + solar + "'")
-    solar_id = cur.fetchall()[0][0]
     cur.execute("SELECT id FROM planets" + str(solar_id) + " WHERE name = '" + planet + "'")
     if len(cur.fetchall()): raise Exception()
     cur.execute('INSERT INTO planets' + str(solar_id) +' (name) VALUES ("' + planet + '")')
     conn.commit()
     return {}
-    
 
-@app.get("/{id}/planets/") # 惑星を選択
-# ボタン投下後の処理を並行処理で受け取る
-async def root(text = None):
+def get_solar_id(solar_name):
+    cur = conn.cursor()
+    cur.execute("SELECT id FROM solars WHERE name = '" + solar_name + "'")
+    solar_id = cur.fetchall()[0][0]
+    return solar_id
+
+def get_planet_id(solar_name, planet_name):
+    cur = conn.cursor()
+    table_name = "planets" + str(get_solar_id(solar_name))
+    cur.execute("SELECT id FROM " + table_name + " WHERE name = '" + planet_name + "'")
+    print("SELECT id FROM " + table_name + " WHERE name = '" + planet_name + "'")
+
+    planet_id = cur.fetchall()[0][0]
+    return planet_id
+
+
+# 惑星を選択
+@app.get("/planet/{solar}/{planet}")
+async def planet(request: Request, solar: str, planet: str):
+    """
+    cur = conn.cursor()
+    cur.execute("SELECT text FROM message WHERE solar_id = " + str(get_solar_id(solar)) + " AND planet_id= " + str(get_planet_id(solar, planet)))
+    messages = [row[0] for row in cur.fetchall()]
+    """
+    return templates.TemplateResponse(
+        "planet.html",
+        {
+            "request": request,
+            #"list": messages,
+        }
+    )
+
+# メッセージを追加
+@app.get("/planet/{solar}/{planet}/addmsg")
+async def root(solar: str, planet: str, text: str):
+    message = ""
+    if mecab_mode:
+        message = sentence_words(text)
+    else:
+        message = [text]
+
+    # データベースにまとめて追加
+    cur = conn.cursor()
+    for msg in message:
+        values = "( " + str(get_solar_id(solar)) + ", " + str(get_planet_id(solar, planet)) + ", '" + msg + "')"    
+        cur.execute("INSERT INTO message (solar_id, planet_id, text) VALUES " + values)
+    conn.commit()
+    
+    return {"list": message}
+
+def sentence_words(text):
+    
     result = tagger.parseToNode(text) # 形態素分析の結果を返す
     node = result
     response = [] # レスポンスをリストで格納
 
     while node: # 分析結果が残っているか
-
-        # node.surfaceは形態素分析された単語
-        # node.featureは形態素分析の結果
-        print(node.surface)
-        print(node.feature.split(",")) 
-
         if node.surface: # node.surfaceが存在する場合
             response.append(node.surface) # 形態素分析された単語をレスポンスに追加
         node = node.next # 次の形態素分析結果に移る
 
-    return {"list":response} # レスポンスを返す
+    return response
 
-#渡されたtextをwords.datに追記
-@app.get("/write")
+#渡されたtextをデータベースに追記
+@app.get("/planet_write")
 async def write(string):
     async with open("./src/words.dat","a",encoding="utf-8") as f:
         await f.write("\n"+string)
     return {}
 
-#words.datに保存された内容を読み出し
-@app.get("/read")
-async def read():
-    async with open("./src/words.dat","r",encoding="utf-8") as f:
-        content = await f.read()
-    return {"list":content.split("\n")}
+#データベースに保存された内容を読み出し
+@app.get("/planet/{solar}/{planet}/read")
+async def read(solar: str, planet: str):
+    #async with open("./src/words.dat","r",encoding="utf-8") as f:
+    #    content = await f.read()
+    #return {"list":content.split("\n")}
+    cur = conn.cursor()
+    cur.execute("SELECT text FROM message WHERE solar_id = " + str(get_solar_id(solar)) + " AND planet_id= " + str(get_planet_id(solar, planet)))
+    messages = [row[0] for row in cur.fetchall()]
+    return {'list': messages}

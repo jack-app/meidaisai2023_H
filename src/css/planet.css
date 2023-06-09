@@ -1,6 +1,5 @@
 /* 見た目ここから */
 body{
-    background-color: rgb(27, 27, 27);
     position: absolute;
     width: 100%;
     height: 100%;
@@ -12,9 +11,16 @@ body{
     align-items: center;
     text-align: center;
     display: flex;
+    background-color: rgb(150, 150, 150, 1);
+    background-blend-mode: darken;
 }
 .obj{
     color: white;
+}
+.obj-text {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 #planet_image{
     margin-left: auto;
@@ -101,10 +107,5 @@ body{
     height: 100%;
     width: 100%;
     text-align: center;
-    animation: 3s linear infinite spine;
 }
 /* アニメーションここまで*/
-
-body{
-background-image:url(./src/BackGroundImage.jpg);
-}

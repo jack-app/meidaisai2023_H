@@ -14,6 +14,7 @@ async function post(event){
     try {
         var content = sanitize(post_textbox.value);
         var res = await split_sentence(content);
+        console.log(res);
         update_dynamic_part(res);
         /* フォームをクリア */
         post_textbox.value = "";
@@ -24,6 +25,7 @@ async function post(event){
     }
     return false;
 };
+
 post_button.addEventListener('click',post);
 document.addEventListener('keypress',(event) => {
     if (event.code === "Enter" && event.shiftKey === true) {post();};
@@ -40,7 +42,7 @@ function sanitize(input){
 async function split_sentence(content){
     /* ローカルホストにMecabを動かしてもらいます */
     return (
-        await fetch(`http://127.0.0.1:8000/?text=${content}`)
+        await fetch(location.pathname + '/addmsg?text=' + content)
         ).json();
 };
 
@@ -49,39 +51,40 @@ function update_dynamic_part(res){
     res.list.forEach((word) => {
         /* 画面に反映します */
         var obj = document.createElement("div");
-        obj.innerText = word;
+        obj.innerHTML = "<div class='obj-text'>" + word + "</div>";
         obj.classList.add("obj");
         obj.setAttribute("obj-id",dynamic_part.childElementCount + 1);
         obj.setAttribute("tremor",Math.random());
+
         dynamic_part.append(obj);
         update_style(obj);
     })
-    console.log(dynamic_part);
 };
 
 function update_style(obj){
-    obj.setAttribute("style",
-        /* objにのみ適用されるスタイル */
-        /*回転中心が画面中央になるように調整しています*/
-        `animation-duration:${Math.abs(1-obj.getAttribute("tremor"))*60}s;\
-        top:${obj.getAttribute("tremor")*35}%;\
-        height:${100-obj.getAttribute("tremor")*70}%;`
-    );
+    console.log(obj);
+    const duration = Math.floor(obj.getAttribute("tremor")*60) + 10;
+    /* objにのみ適用されるスタイル */
+    /*回転中心が画面中央になるように調整しています*/
+    obj.style.animation = duration.toString() + "s linear -" + (Math.floor(Math.random() * duration)).toString() + "s infinite spine";
+    obj.firstElementChild.style.top = (Math.floor(obj.getAttribute("tremor") * 35)).toString() + "%";
 };
 
 async function register_strings(strings){
-    /*渡されたstringの配列を./src/words.datに保存します*/
+    /*渡されたstringの配列をデータベースに保存します*/
     string = strings.join("%0D%0A");
-    await fetch(`http://127.0.0.1:8000/write?string=${string}`);
+    //await fetch('planet_write?string=${string}');
 };
 
 async function load_objects(){
-    /* ./src/words.datに保存された内容を読み出します。 */
-    return (await fetch(`http://127.0.0.1:8000/read`)).json();
+    /* データベースに保存された内容を読み出します。 */
+    return (await fetch(location.pathname + '/read')).json();
 };
 
+// 以前の内容を呼び出させる
 async function restore_previous_state(){
     var res = await load_objects();
+    console.log(res);
     update_dynamic_part(res);
 };
 restore_previous_state();
