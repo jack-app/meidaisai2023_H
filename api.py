@@ -81,12 +81,18 @@ def initial_sql(dbpath):
         planet_id INTEGER,
         text TEXT NOT NULL)
     """)
+    cur.execute("""CREATE TABLE IF NOT EXISTS raw_message
+        (solar_id INTEGER,
+        planet_id INTEGER,
+        text TEXT NOT NULL)
+    """)
     conn.commit()
 
 
 # データベースに接続
 dbpath = "./src/db/planets.sqlite"
-if os.path.isfile(dbpath) == False:
+initial_db = False
+if initial_db == True or os.path.isfile(dbpath) == False:
     initial_sql(dbpath)
 conn = sql.connect(dbpath)
 
@@ -140,16 +146,12 @@ def get_planet_id(solar_name, planet_name):
 # 惑星を選択
 @app.get("/planet/{solar}/{planet}")
 async def planet(request: Request, solar: str, planet: str):
-    """
-    cur = conn.cursor()
-    cur.execute("SELECT text FROM message WHERE solar_id = " + str(get_solar_id(solar)) + " AND planet_id= " + str(get_planet_id(solar, planet)))
-    messages = [row[0] for row in cur.fetchall()]
-    """
     return templates.TemplateResponse(
         "planet.html",
         {
             "request": request,
-            #"list": messages,
+            "solar": solar,
+            "planet": planet,
         }
     )
 
@@ -167,13 +169,16 @@ async def root(solar: str, planet: str, text: str):
     for msg in message:
         values = "( " + str(get_solar_id(solar)) + ", " + str(get_planet_id(solar, planet)) + ", '" + msg + "')"    
         cur.execute("INSERT INTO message (solar_id, planet_id, text) VALUES " + values)
+    values = "( " + str(get_solar_id(solar)) + ", " + str(get_planet_id(solar, planet)) + ", '" + text + "')"    
+    cur.execute("INSERT INTO raw_message (solar_id, planet_id, text) VALUES " + values)
     conn.commit()
     
     return {"list": message}
 
+# 形態素分析の結果を返す
 def sentence_words(text):
     
-    result = tagger.parseToNode(text) # 形態素分析の結果を返す
+    result = tagger.parseToNode(text)
     node = result
     response = [] # レスポンスをリストで格納
 
@@ -184,20 +189,37 @@ def sentence_words(text):
 
     return response
 
+
+"""
 #渡されたtextをデータベースに追記
 @app.get("/planet_write")
 async def write(string):
     async with open("./src/words.dat","a",encoding="utf-8") as f:
         await f.write("\n"+string)
     return {}
+"""
 
-#データベースに保存された内容を読み出し
+# データベースに保存された内容を読み出し
 @app.get("/planet/{solar}/{planet}/read")
 async def read(solar: str, planet: str):
-    #async with open("./src/words.dat","r",encoding="utf-8") as f:
-    #    content = await f.read()
-    #return {"list":content.split("\n")}
+    """
+    async with open("./src/words.dat","r",encoding="utf-8") as f:
+        content = await f.read()
+    return {"list":content.split("\n")}
+    """
     cur = conn.cursor()
     cur.execute("SELECT text FROM message WHERE solar_id = " + str(get_solar_id(solar)) + " AND planet_id= " + str(get_planet_id(solar, planet)))
     messages = [row[0] for row in cur.fetchall()]
     return {'list': messages}
+
+# 惑星を探索する
+@app.get("/search/{solar}/{planet}")
+def search(solar: str, planet: str, request: Request):
+        return templates.TemplateResponse(
+        "star.html",
+        {
+            "request": request,
+            "solar": solar,
+            "planet": planet,
+        }
+    )

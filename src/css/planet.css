@@ -26,7 +26,16 @@ body{
     margin-left: auto;
     margin-right: auto;
     width: auto;
-    height: 18%;
+    height: 150px;
+}
+#planet_image:hover {
+    cursor: pointer;
+    transform: scale(125%, 125%);
+    filter: drop-shadow(0 0 5px white);
+    transition: all 0.3s;
+}
+.planet_picture {
+    width: 150px;
 }
 #post_form{
     position: absolute;

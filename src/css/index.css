@@ -1,7 +1,6 @@
 body{
    background-color: rgb(150, 150, 150, 1);
    background-blend-mode: darken;
-   position: relative;
    max-height: 100vh;
 }
 /*恒星*/
@@ -84,16 +83,21 @@ body{
    justify-content: center;
    padding: 25px;
    margin-top: 20px;
+   margin-left: 20px;
    color: rgb(24, 173, 242);
    border: 5px solid rgb(24, 173, 242);
    border-radius: 20px;
+}
+.bottom-UI-wrap {
+   display: block;
+   height: 110px;
 }
 .bottom-UI-menu {
    position: absolute;
    z-index: 100;
    width: 100vw;
-   left: 0;
-   bottom: 10%;
+   left: calc(50vw - 350px);
+   bottom: 20px;
    color: white;
 }
 .solar-add-fix {
@@ -145,6 +149,28 @@ body{
 .solar-add-btn:hover {
    cursor: pointer;
    background-color: rgb(80, 155, 221);
+}
+.return-btn {
+   position: absolute;
+   left: 20px;
+   bottom: 20px;
+   width: 100px;
+   height: 100px;
+   border: 5px solid rgb(24, 173, 242);
+   border-radius: 20px;
+   display: table;
+}
+.return-btn > a {
+   display: table-cell;
+   vertical-align: middle;
+   color: rgb(24, 173, 242);
+   font-size: 50px;
+   padding: 10px;
+   font-weight: bold;
+   text-decoration: none;
+}
+.return-btn > a:hover {
+   color: rgb(177, 211, 227);
 }
 
 .bar{

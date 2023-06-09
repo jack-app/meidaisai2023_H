@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <!--ヘッダー情報-->
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <link rel="icon" href="{{url_for('static', path='./planet.ico')}}" sizes="any">
+    <link rel="icon" href="{{url_for('static', path='./planet.svg')}}" type="image/svg+xml"/>
+    <link rel="stylesheet" href="{{url_for('static', path='./css/index.css')}}" type="text/css"/>
+    <link rel="stylesheet" href="{{url_for('static', path='./css/star.css')}}" type="text/css"/>
+    <title>Planet</title>
+</head>
+<body style="background-image:url({{url_for('static', path="img/starBackGround.png")}})">
+    <div id="user">
+        <img src="{{url_for('static', path="img/spaceman1.png")}}">
+    </div>
+    <div id="cpu1" class="cpu">
+        <img src="{{url_for('static', path="img/spaceman2.png")}}" id="cpu1-img">
+        <div id="speech-wrapper1">
+            <img src="{{url_for('static', path="img/speech_balloon.png")}}" class="speech">
+            <p>こんにちは！！</p>
+        </div>
+    </div>
+
+    <div id="cpu2" class="cpu">
+        <img src="{{url_for('static', path="img/spaceman3.png")}}" id="cpu2-img">
+        <div id="speech-wrapper2">
+            <img src="{{url_for('static', path="img/speech_balloon.png")}}" class="speech">
+            <p>おはぎ！！</p>
+        </div>
+    </div>
+
+    <!--UIメニュー-->
+    <div class="top-UI-menu">
+        <div class="pos-lock">
+            <div class="solar-name-UI">{{solar}}系 {{planet}}星</div>
+        </div>
+    </div>
+    <div class="return-btn">
+        <a href="/planet/{{solar}}/{{planet}}" title="戻る">←</a>
+    </div>
+
+    <script>
+        var user = document.getElementById( 'user' ) ;
+        var userpos = user.getBoundingClientRect() ;
+        //キャラクターの初期位置
+        var usery = userpos.top;
+        var userx = userpos.left;
+
+        addEventListener( "keydown", keydownfunc );
+
+        //キーが押されたときに呼び出される関数
+        function keydownfunc( event ) {
+            var key_code = event.keyCode;
+
+            if( key_code === 37) userx -= 5;
+            if( key_code === 38) usery -= 5;
+            if( key_code === 39) userx += 5;
+            if( key_code === 40) usery += 5;
+            document.getElementById( 'user' ).style.top =usery + "px";
+            document.getElementById( 'user' ).style.left = userx + "px";
+        }
+
+        //CPU
+        document.getElementById("speech-wrapper1").style.visibility = "hidden";
+        var cpu1 = document.getElementById( 'cpu1' ) ;
+        var cpu1pos = cpu1.getBoundingClientRect() ;
+        var cpu1y = cpu1pos.top;
+        var cpu1x = cpu1pos.left;
+        addEventListener( "keydown",  cpufunc1);
+        function cpufunc1(){
+            var cpu1dis = Math.sqrt( Math.pow( userx-cpu1x, 2 ) + Math.pow( usery-cpu1y, 2 ) ) 
+            if(cpu1dis <= 150) document.getElementById("speech-wrapper1").style.visibility = "visible";
+            else document.getElementById("speech-wrapper1").style.visibility = "hidden";
+        }
+
+        document.getElementById("speech-wrapper2").style.visibility = "hidden";
+        var cpu2 = document.getElementById( 'cpu2' ) ;
+        var cpu2pos = cpu2.getBoundingClientRect() ;
+        var cpu2y = cpu2pos.top;
+        var cpu2x = cpu2pos.left;
+        addEventListener( "keydown",  cpufunc2);
+        function cpufunc2(){
+            var cpu2dis = Math.sqrt( Math.pow( userx-cpu2x, 2 ) + Math.pow( usery-cpu2y, 2 ) ) 
+            if(cpu2dis <= 150) document.getElementById("speech-wrapper2").style.visibility = "visible";
+            else document.getElementById("speech-wrapper2").style.visibility = "hidden";
+        }
+    </script>
+</body>
+</html>

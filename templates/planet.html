@@ -5,21 +5,37 @@
     <meta http-equiv="Content-Style-Type" content="text/css">
     <link rel="icon" href="{{url_for('static', path='./planet.ico')}}" sizes="any">
     <link rel="icon" href="{{url_for('static', path='./planet.svg')}}" type="image/svg+xml"/>
+    <link rel="stylesheet" href="{{url_for('static', path='./css/index.css')}}" type="text/css"/>
     <link rel="stylesheet" href="{{url_for('static', path='./css/planet.css')}}" type="text/css"/>
     <title>Planet</title>
 </head>
 <body style="background-image:url({{url_for('static', path="img/BackGroundImage.jpg")}})">
-<!--静的領域ここから-->
-<form id="post_form" onsubmit="return false;">
-    <textarea placeholder="ここに文章を入力" id="post_textbox" name="post_form" type="textbox"></textarea>
-    <button id="post_button" type="button" onclick="">POST</button>
-</form>
-<img src="{{url_for('static', path='./img/StarImage.png')}}" title="planet" id="planet_image"/>
-<!--静的領域ここまで-->
-<!--動的領域ここから-->
-<div id="dynamic_part">
-</div>
-<!--動的領域ここまで-->
+    <!--静的領域ここから-->
+    <form id="post_form" onsubmit="return false;">
+        <textarea placeholder="メッセージを入力" id="post_textbox" name="post_form" type="textbox"></textarea>
+        <button id="post_button" type="button" onclick="">POST</button>
+    </form>
+    <div id="planet_image">
+        <a href="/search/{{solar}}/{{planet}}">
+            <img class="planet_picture" src="{{url_for('static', path='./img/StarImage.png')}}" title="{{planet}}星 を探索する"/>
+        </a>
+    </div>
+    <!--静的領域ここまで-->
+    <!--動的領域ここから-->
+    <div id="dynamic_part">
+    </div>
+    <!--動的領域ここまで-->
+
+    <!--UIメニュー-->
+    <div class="top-UI-menu">
+        <div class="pos-lock">
+            <div class="solar-name-UI">{{solar}}系 {{planet}}星</div>
+        </div>
+    </div>
+    <div class="return-btn">
+        <a href="/" title="戻る">←</a>
+    </div>
+
 </body>
 <script type="text/javascript" src="{{url_for('static', path='./js/planet.js')}}"></script>
 </html>
