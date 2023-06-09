@@ -1,0 +1,79 @@
+body{
+    background-image: url(src/starBackgound.png);
+    background-size: cover;
+}
+/*user*/
+#user{
+    z-index: 10;
+    position: absolute;
+	top: 70%;
+	left: 50%;
+}
+#user img{
+    width:100px;
+    height:auto;
+}
+
+/*cpu*/
+.cpu{
+    position: relative;
+}
+.speech{
+    width:250px;
+    height:100px;
+}
+
+#cpu1{
+    position:absolute;
+    top:50px;
+    left:10px;
+}
+#cpu1-img{
+    position:absolute;
+    top:50px;
+    left:10px;
+    width:100px;
+    height:auto;
+}
+#speech-wrapper1{
+    position:absolute;
+    top: 0px;
+    left:70px;
+    position:relative;
+    width:250px;
+    height:100px;
+}
+#speech-wrapper1 p{
+    position: absolute;
+    top: 33%;
+    left: 50%;
+    transform:translate(-50%,-50%);
+}
+
+
+#cpu2{
+    position:absolute;
+    top:100px;
+    left:500px;
+}
+#cpu2-img{
+    position:absolute;
+    top:50px;
+    left:10px;
+    width:100px;
+    height:auto;
+}
+#speech-wrapper2{
+    position:absolute;
+    top: 0px;
+    left:70px;
+    position:relative;
+    width:250px;
+    height:100px;
+}
+#speech-wrapper2 p{
+    position: absolute;
+    top: 33%;
+    left: 50%;
+    transform:translate(-50%,-50%);
+}
