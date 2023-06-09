@@ -6,11 +6,19 @@ from aiofiles import open
 
 from fastapi.templating import Jinja2Templates
 from fastapi.requests import Request
+from fastapi.staticfiles import StaticFiles
 import sqlite3 as sql
 import os
 
 # FastAPIを起動
 app = FastAPI()
+
+# 静的ファイルを設定
+app.mount(
+    '/src',
+    StaticFiles(directory="src"),
+    name='static'
+)
 
 # ミドルウェア(ここはあんまり考えなくてもいい)
 app.add_middleware(
@@ -24,7 +32,7 @@ app.add_middleware(
 tagger = MeCab.Tagger() # MeCabのインスタンス
 
 # Jinja2テンプレートで反映させる
-templates = Jinja2Templates(directory='templates')
+templates = Jinja2Templates(directory='./templates')
 
 # カレントディレクトリを変更
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -65,7 +73,7 @@ def initial_sql(dbpath):
     conn.commit()
 
 # データベースに接続
-dbpath = "./planets.sqlite"
+dbpath = "./src/db/planets.sqlite"
 if os.path.isfile(dbpath) == False:
     initial_sql(dbpath)
 conn = sql.connect(dbpath)
@@ -76,13 +84,17 @@ async def title(request: Request):
     cur = conn.cursor()
     cur.execute("SELECT * FROM solars")
     solars = cur.fetchall()
-    #for in len(solars):
-    #cur.execute("SELECT * FROM" + solars_name)
+    planets = []
+    for idx in range(len(solars)):
+        solars_name = "planets" + str(idx + 1)
+        cur.execute("SELECT * FROM " + solars_name)
+        planets.append(cur.fetchall())
     return templates.TemplateResponse(
-        "title.html",
+        "index.html",
         {
             "request": request,
-            "planets": [row[1] for row in solars],
+            "solars": [row[1] for row in solars],
+            "planets": planets
         }
     )
 

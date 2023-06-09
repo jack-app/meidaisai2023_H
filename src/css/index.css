@@ -3,7 +3,7 @@ body{
 }
 /*恒星*/
 .solar-system{
-    text-align: center;
+    text-align: middle;
     height:100%;
     position:relative;
 }
@@ -49,7 +49,7 @@ body{
 /*惑星*/
 .topic1{
     position: absolute;
-    top:-;
+    top:0;
     left:40%;
     background: #727272;
 }
