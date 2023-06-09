@@ -1,90 +1,55 @@
 body{
-    position: absolute;
     width: 100%;
     height: 100%;
     overflow: hidden;
     margin: 0 0 0 0;
     border: 0 0 0 0;
     padding: 0 0 0 0;
-    z-index: -2;
     align-items: center;
     text-align: center;
-    display: flex;
     background-size: cover;
     background-blend-mode: normal;
+    cursor: pointer;
 }
 /*user*/
 #user{
-    z-index: 10;
     position: absolute;
 	top: 70%;
 	left: 50%;
+    transition: all 0.1s;
 }
 #user img{
-    width:100px;
-    height:auto;
+    width: 100px;
+    height: auto;
 }
 
 /*cpu*/
-.cpu{
+.cpu {
+    position: absolute;
+}
+.cpu-speech {
+    width: 300px;
+    height: auto;
+}
+.cpu-img {
+    width: 100px;
+    height: auto;
+}
+.cpu-wrapper {
     position: relative;
+    height: 100vh;
 }
-.speech{
-    width:250px;
-    height:100px;
-}
-
-#cpu1{
-    position:absolute;
-    top:50px;
-    left:10px;
-}
-#cpu1-img{
-    position:absolute;
-    top:50px;
-    left:10px;
-    width:100px;
-    height:auto;
-}
-#speech-wrapper1{
-    position:absolute;
-    top: 0px;
-    left:70px;
-    position:relative;
-    width:250px;
-    height:100px;
-}
-#speech-wrapper1 p{
+.speech-pos {
     position: absolute;
-    top: 33%;
-    left: 50%;
-    transform:translate(-50%,-50%);
+    top: -200px;
+    left: 50px;
+    transition: all 1s;
+    opacity: 0;
 }
-
-
-#cpu2{
-    position:absolute;
-    top:100px;
-    left:500px;
-}
-#cpu2-img{
-    position:absolute;
-    top:50px;
-    left:10px;
-    width:100px;
-    height:auto;
-}
-#speech-wrapper2{
-    position:absolute;
-    top: 0px;
-    left:70px;
-    position:relative;
-    width:250px;
-    height:100px;
-}
-#speech-wrapper2 p{
+.speech-text {
     position: absolute;
-    top: 33%;
+    top: 45%;
     left: 50%;
-    transform:translate(-50%,-50%);
+    transform: translate(-50%, -50%);
+    width: 150px;
 }

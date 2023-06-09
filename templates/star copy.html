@@ -12,18 +12,22 @@
 </head>
 <body style="background-image:url({{url_for('static', path="img/starBackGround.png")}})">
     <div id="user">
-        <img src="{{url_for('static', path="img/spaceman_user.png")}}">
+        <img src="{{url_for('static', path="img/spaceman1.png")}}">
     </div>
-    <div class="cpu-wrapper">
-        {% for idx in range(messages | length) %}
-        <div id="cpu{{idx}}" class="cpu">
-            <img class="cpu-img" />
-            <div class="speech-pos">
-                <img src="{{url_for('static', path="img/speech_balloon.png")}}" class="cpu-speech">
-                <p class="speech-text">{{messages[idx]}}</p>
-            </div>
+    <div id="cpu1" class="cpu">
+        <img src="{{url_for('static', path="img/spaceman2.png")}}" id="cpu1-img">
+        <div id="speech-wrapper1">
+            <img src="{{url_for('static', path="img/speech_balloon.png")}}" class="speech">
+            <p>こんにちは！！</p>
         </div>
-        {% endfor %}
+    </div>
+
+    <div id="cpu2" class="cpu">
+        <img src="{{url_for('static', path="img/spaceman3.png")}}" id="cpu2-img">
+        <div id="speech-wrapper2">
+            <img src="{{url_for('static', path="img/speech_balloon.png")}}" class="speech">
+            <p>おはぎ！！</p>
+        </div>
     </div>
 
     <!--UIメニュー-->

@@ -128,12 +128,14 @@ async def add_planets(solar: str, planet: str):
     return {}
 
 def get_solar_id(solar_name):
+    conn = sql.connect(dbpath)
     cur = conn.cursor()
     cur.execute("SELECT id FROM solars WHERE name = '" + solar_name + "'")
     solar_id = cur.fetchall()[0][0]
     return solar_id
 
 def get_planet_id(solar_name, planet_name):
+    conn = sql.connect(dbpath)
     cur = conn.cursor()
     table_name = "planets" + str(get_solar_id(solar_name))
     cur.execute("SELECT id FROM " + table_name + " WHERE name = '" + planet_name + "'")
@@ -215,11 +217,16 @@ async def read(solar: str, planet: str):
 # 惑星を探索する
 @app.get("/search/{solar}/{planet}")
 def search(solar: str, planet: str, request: Request):
-        return templates.TemplateResponse(
-        "star.html",
-        {
-            "request": request,
-            "solar": solar,
-            "planet": planet,
-        }
-    )
+    conn = sql.connect(dbpath)
+    cur = conn.cursor()  
+    cur.execute("SELECT text FROM raw_message WHERE solar_id = " + str(get_solar_id(solar)) + " AND planet_id= " + str(get_planet_id(solar, planet)))
+    messages = [row[0] for row in cur.fetchall()]
+    return templates.TemplateResponse(
+    "star.html",
+    {
+        "request": request,
+        "solar": solar,
+        "planet": planet,
+        "messages": messages,
+    }
+)
