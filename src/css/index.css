@@ -1,4 +1,5 @@
 body{
+   user-select: none;
    background-color: rgb(150, 150, 150, 1);
    background-blend-mode: darken;
    max-height: 100vh;

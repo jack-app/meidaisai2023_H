@@ -105,8 +105,10 @@ async def title(request: Request):
     planets = []
     for idx in range(len(solars)):
         solars_name = "planets" + str(idx + 1)
+        cur.execute("DELETE FROM " + solars_name + " WHERE name = ''")
         cur.execute("SELECT * FROM " + solars_name)
         planets.append(cur.fetchall())
+    print(planets)
     return templates.TemplateResponse(
         "index.html",
         {
