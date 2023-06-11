@@ -40,6 +40,19 @@ function cpufunc() {
     }
 }
 
+function showdialogue(event) {
+    event.target.nextElementSibling.style.opacity = "1";
+};
+function hidedialogue(event) {
+    event.target.nextElementSibling.style.opacity = "0";
+};
+
+elements = document.getElementsByClassName("cpu-img")
+for (let i=0; i<elements.length; i++) {
+elements[i].addEventListener("mouseenter", showdialogue);
+elements[i].addEventListener("mouseout", hidedialogue);     
+}
+
 
 // ロード時の設定
 window.onload = function() {
