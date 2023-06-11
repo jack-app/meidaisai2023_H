@@ -87,12 +87,9 @@ async function restore_previous_state(){
 };
 restore_previous_state();
 
-// 惑星の色をランダムに設定
+// 惑星の画像・色をランダムに設定
 window.onload = function() {
     const solarImg = document.getElementsByClassName("planet_picture")[0];
-    var color = {r:0, g:0, b:0};
-    for (let i in color) {
-        color[i] = Math.floor(Math.random() * 100) + 100;
-    }
-    planet_picture
+    solarImg.src = "/src/img/StarImage" + (Math.floor(Math.random() * 3) + 1).toString() + ".png";
+    solarImg.style.filter = "hue-rotate(" + (Math.floor(Math.random() * 360)).toString() + "deg)";
 }

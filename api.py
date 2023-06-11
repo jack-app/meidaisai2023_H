@@ -220,7 +220,11 @@ def search(solar: str, planet: str, request: Request):
     conn = sql.connect(dbpath)
     cur = conn.cursor()  
     cur.execute("SELECT text FROM raw_message WHERE solar_id = " + str(get_solar_id(solar)) + " AND planet_id= " + str(get_planet_id(solar, planet)))
-    messages = [row[0] for row in cur.fetchall()]
+    messages = []
+    for row in cur.fetchall():
+        print(row[0])
+        if row[0].isspace() == False and row[0] != "":
+            messages.append(row[0])
     return templates.TemplateResponse(
     "star.html",
     {

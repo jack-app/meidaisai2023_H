@@ -26,9 +26,10 @@ function keydownfunc( event ) {
 
 // 近づいたらCPUのコメントを表示
 addEventListener("keydown", cpufunc);
-function cpufunc() {
+function cpufunc(event) {
     const ele = document.getElementsByClassName("cpu-img");
     for (let i=0; i<ele.length; i++) {
+        // プレイヤーとの現在距離
         var cpuPos = ele[i].getBoundingClientRect();
         var cpuDis = Math.sqrt(Math.pow( userx - cpuPos.left, 2 ) + Math.pow( usery - cpuPos.top, 2 ));
         if (cpuDis <= 150) {
@@ -40,19 +41,21 @@ function cpufunc() {
     }
 }
 
-function showdialogue(event) {
-    event.target.nextElementSibling.style.opacity = "1";
-};
-function hidedialogue(event) {
-    event.target.nextElementSibling.style.opacity = "0";
-};
-
-elements = document.getElementsByClassName("cpu-img")
-for (let i=0; i<elements.length; i++) {
-elements[i].addEventListener("mouseenter", showdialogue);
-elements[i].addEventListener("mouseout", hidedialogue);     
+// マウスとの現在距離
+function cpufunc2(event) {
+    const ele = document.getElementsByClassName("cpu-img");
+    for (let i=0; i<ele.length; i++) {
+        // プレイヤーとの現在距離
+        var cpuPos = ele[i].getBoundingClientRect();
+        var cpuDis = Math.sqrt(Math.pow( event.pageX - cpuPos.left - 50, 2 ) + Math.pow( event.pageY - cpuPos.top - 50, 2 ));
+        if (cpuDis <= 100) {
+            ele[i].nextElementSibling.style.opacity = "1";
+        }
+        else {
+            ele[i].nextElementSibling.style.opacity = "0";
+        }
+    }
 }
-
 
 // ロード時の設定
 window.onload = function() {
@@ -60,7 +63,6 @@ window.onload = function() {
     const ele = document.getElementsByClassName("cpu");
     for (let i=0; i<ele.length; i++) {
         var img = ele[i].getElementsByClassName("cpu-img")[0];
-        console.log(img.src);
         img.src = "/src/img/spaceman/spaceman"+ (Math.floor(Math.random() * 12)).toString() +".png";
         ele[i].style.top = (Math.floor(Math.random() * 50) + 20).toString() + "%";
         ele[i].style.left = (Math.floor(Math.random() * 70) + 10).toString() + "%";
@@ -69,6 +71,7 @@ window.onload = function() {
     // その他設定
     user.style.zIndex = Math.floor(usery + 100).toString();
     cpufunc();
+    window.onmousemove = cpufunc2;
 }
 
 
